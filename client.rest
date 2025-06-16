@@ -1,0 +1,36 @@
+@baseUrl = http://localhost:3000
+
+
+###
+# @name FindAll-Users
+GET {{baseUrl}}/user
+
+###
+# @name Find-User
+GET {{baseUrl}}/user/1
+
+###
+# @name Create-User
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+    "name": "Rebeca Machado",
+    "email": "rebeca@teste.com",
+    "password": "123456",
+    "role": "operator"
+
+}
+
+###
+# @name Update-User
+PATCH  {{baseUrl}}/user/8
+Content-Type: application/json
+
+{
+    "role": "admin"
+}
+
+###
+# @name Remove-User
+DELETE {{baseUrl}}/user/7
