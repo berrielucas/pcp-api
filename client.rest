@@ -1,5 +1,6 @@
 @baseUrl = http://localhost:3000
 
+# Users
 
 ###
 # @name FindAll-Users
@@ -15,16 +16,15 @@ POST {{baseUrl}}/user
 Content-Type: application/json
 
 {
-    "name": "Rebeca Machado",
-    "email": "rebeca@teste.com",
+    "name": "Lucas Berriel",
+    "email": "lucas@teste.com",
     "password": "123456",
-    "role": "operator"
-
+    "role": "admin"
 }
 
 ###
 # @name Update-User
-PATCH  {{baseUrl}}/user/8
+PATCH   {{baseUrl}}/user/10
 Content-Type: application/json
 
 {
@@ -33,4 +33,72 @@ Content-Type: application/json
 
 ###
 # @name Remove-User
-DELETE {{baseUrl}}/user/7
+DELETE {{baseUrl}}/user/3
+
+
+# Products
+
+###
+# @name FindAll-Products
+GET {{baseUrl}}/product
+
+###
+# @name Find-Product
+GET {{baseUrl}}/product/1
+
+###
+# @name Create-Product
+POST {{baseUrl}}/product
+Content-Type: application/json
+
+{
+    "name": "Garrafa Térmica 2L",
+    "description": "Uma garrafa termica bonitinha"
+}
+
+###
+# @name Update-Product
+PATCH   {{baseUrl}}/product/1
+Content-Type: application/json
+
+{
+    "description": "Atualizando"
+}
+
+###
+# @name Remove-Product
+DELETE {{baseUrl}}/product/1
+
+
+# Matéria Prima
+
+###
+# @name FindAll-Raw-Materials
+GET {{baseUrl}}/raw-materials
+
+###
+# @name Find-Raw-Material
+GET {{baseUrl}}/raw-materials/1
+
+###
+# @name Create-Raw-Material
+POST {{baseUrl}}/raw-materials
+Content-Type: application/json
+
+{
+    "name": "Plástico",
+    "unit": "kg"
+}
+
+###
+# @name Update-Raw-Material
+PATCH   {{baseUrl}}/raw-materials/1
+Content-Type: application/json
+
+{
+    "name": "Areia"
+}
+
+###
+# @name Remove-Raw-Material
+DELETE {{baseUrl}}/raw-materials/1
