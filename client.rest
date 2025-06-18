@@ -1,17 +1,15 @@
 @baseUrl = http://localhost:3000
 
+
 # Users
 
-###
-# @name FindAll-Users
+### @name FindAll-Users
 GET {{baseUrl}}/user
 
-###
-# @name Find-User
+### @name Find-User
 GET {{baseUrl}}/user/1
 
-###
-# @name Create-User
+### @name Create-User
 POST {{baseUrl}}/user
 Content-Type: application/json
 
@@ -22,8 +20,7 @@ Content-Type: application/json
     "role": "admin"
 }
 
-###
-# @name Update-User
+### @name Update-User
 PATCH   {{baseUrl}}/user/10
 Content-Type: application/json
 
@@ -31,74 +28,73 @@ Content-Type: application/json
     "role": "admin"
 }
 
-###
-# @name Remove-User
+### @name Remove-User
 DELETE {{baseUrl}}/user/3
 
 
-# Products
+# Itens
 
-###
-# @name FindAll-Products
-GET {{baseUrl}}/product
+### @name FindAll-Items
+GET {{baseUrl}}/items
 
-###
-# @name Find-Product
-GET {{baseUrl}}/product/1
+### @name Find-Item
+GET {{baseUrl}}/items/12
 
-###
-# @name Create-Product
-POST {{baseUrl}}/product
+### @name Create-Item
+POST {{baseUrl}}/items
 Content-Type: application/json
 
 {
-    "name": "Garrafa Térmica 2L",
-    "description": "Uma garrafa termica bonitinha"
+    "name": "Garrafa Térmica 500ml",
+    "description": "Exemplo de descrição",
+    "unit": "unit",
+    "item_type": "product"
 }
 
-###
-# @name Update-Product
-PATCH   {{baseUrl}}/product/1
+
+### @name Update-Item
+PATCH   {{baseUrl}}/items/1
 Content-Type: application/json
 
 {
     "description": "Atualizando"
 }
 
-###
-# @name Remove-Product
-DELETE {{baseUrl}}/product/1
-
-
-# Matéria Prima
-
-###
-# @name FindAll-Raw-Materials
-GET {{baseUrl}}/raw-materials
-
-###
-# @name Find-Raw-Material
-GET {{baseUrl}}/raw-materials/1
-
-###
-# @name Create-Raw-Material
-POST {{baseUrl}}/raw-materials
+### @name Update-Inventory-Item
+PATCH   {{baseUrl}}/items/12/inventory
 Content-Type: application/json
 
 {
-    "name": "Plástico",
-    "unit": "kg"
+    "quantity": 1000
 }
 
-###
-# @name Update-Raw-Material
-PATCH   {{baseUrl}}/raw-materials/1
+### @name Remove-Item
+DELETE {{baseUrl}}/items/11
+
+
+# Máquina
+
+### @name FindAll-Machines
+GET {{baseUrl}}/machines
+
+### @name Find-Machine
+GET {{baseUrl}}/machines/2
+
+### @name Create-Machine
+POST {{baseUrl}}/machines
 Content-Type: application/json
 
 {
-    "name": "Areia"
+    "name": "Polideira"
 }
 
-###
-# @name Remove-Raw-Material
-DELETE {{baseUrl}}/raw-materials/1
+### @name Update-Machine
+PATCH   {{baseUrl}}/machines/1
+Content-Type: application/json
+
+{
+    "name": "Lichadeira"
+}
+
+### @name Remove-Machine
+DELETE {{baseUrl}}/machines/1

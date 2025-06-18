@@ -3,8 +3,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from 'src/user/user.module';
-import { ProductModule } from 'src/product/product.module';
-import { RawMaterialsModule } from 'src/raw-materials/raw-materials.module';
+import { ItemsModule } from 'src/items/items.module';
+import { InventoryModule } from 'src/inventory/inventory.module';
+import { MachinesModule } from 'src/machines/machines.module';
 
 @Module({
   imports: [
@@ -19,8 +20,9 @@ import { RawMaterialsModule } from 'src/raw-materials/raw-materials.module';
       synchronize: true, // Sincroniza tudo com o BD - Não deve ser usado em produção
     }),
     UserModule,
-    ProductModule,
-    RawMaterialsModule,
+    InventoryModule,
+    ItemsModule,
+    MachinesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
