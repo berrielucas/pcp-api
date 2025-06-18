@@ -25,12 +25,24 @@ export class InventoryService {
     return this.inventoryRepository.save(inventory);
   }
 
-  findAll() {
-    return `This action returns all inventory`;
+  async findAll() {
+    const inventory = await this.inventoryRepository.find({
+      relations: ['item'],
+      select: {
+        item: {
+          id: true,
+          name: true,
+          unit: true,
+        },
+      },
+    });
+    return inventory;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} inventory`;
+  async findOne(id: number) {
+    const inventory = await this.inventoryRepository.findOneBy({id});
+    if (inventory) return inventory;
+    this.throwNotFoundError();
   }
 
   async update(id: number, updateInventoryDto: UpdateInventoryDto) {
