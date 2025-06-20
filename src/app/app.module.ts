@@ -4,6 +4,7 @@ import { UserModule } from 'src/user/user.module';
 import { ItemsModule } from 'src/items/items.module';
 import { InventoryModule } from 'src/inventory/inventory.module';
 import { MachinesModule } from 'src/machines/machines.module';
+import { ItemMaterialsModule } from 'src/item_materials/item_materials.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { MachinesModule } from 'src/machines/machines.module';
     UserModule,
     InventoryModule,
     ItemsModule,
+    ItemMaterialsModule,
     MachinesModule,
   ],
 })

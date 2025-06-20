@@ -1,4 +1,6 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateIf, ValidateNested } from "class-validator";
+import { ItemMaterialDto } from "src/item_materials/dto/item-material.dto";
 
 export class CreateItemDto {
     @IsString()
@@ -8,7 +10,7 @@ export class CreateItemDto {
     @IsString()
     @IsNotEmpty()
     @IsOptional()
-    readonly description: string;
+    readonly description?: string;
     
     @IsString()
     @IsNotEmpty()
@@ -22,4 +24,10 @@ export class CreateItemDto {
         both: 'both',
     })
     readonly item_type: 'product' | 'raw_material' | 'both';
+    
+    @IsArray() 
+    @IsOptional()
+    @ValidateNested({ each: true })
+    @Type(() => ItemMaterialDto)
+    readonly raw_materials?: ItemMaterialDto[];
 }

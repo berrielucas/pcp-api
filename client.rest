@@ -32,32 +32,52 @@ Content-Type: application/json
 DELETE {{baseUrl}}/user/3
 
 
+
+
+
+
 # Itens
 
 ### @name FindAll-Items
 GET {{baseUrl}}/items
 
 ### @name Find-Item
-GET {{baseUrl}}/items/12
+GET {{baseUrl}}/items/25
 
 ### @name Create-Item
 POST {{baseUrl}}/items
 Content-Type: application/json
 
 {
-    "name": "Garrafa Térmica 500ml",
-    "description": "Exemplo de descrição",
+    "name": "Produto 01",
     "unit": "unit",
-    "item_type": "product"
+    "description": "Exemplo",
+    "item_type": "product",
+    "raw_materials": [
+        {
+            "raw_material_id": 23,
+            "quantity": 45
+        },
+        {
+            "raw_material_id": 22,
+            "quantity": 23
+        }
+    ]
+    
 }
 
 
 ### @name Update-Item
-PATCH   {{baseUrl}}/items/1
+PATCH   {{baseUrl}}/items/989
 Content-Type: application/json
 
 {
-    "description": "Atualizando"
+    "raw_materials": [
+        {
+            "raw_material_id": 23,
+            "quantity": 10
+        }
+    ]
 }
 
 ### @name Update-Inventory-Item
@@ -69,7 +89,12 @@ Content-Type: application/json
 }
 
 ### @name Remove-Item
-DELETE {{baseUrl}}/items/11
+DELETE {{baseUrl}}/items/26
+
+
+
+
+
 
 
 # Máquina

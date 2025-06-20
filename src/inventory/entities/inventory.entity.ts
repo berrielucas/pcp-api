@@ -10,6 +10,7 @@ export class Inventory {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
+    @JoinColumn({ name: 'item_id' })
     item: Item;
 
     @Column('numeric', { precision: 10, scale: 2 })
