@@ -37,8 +37,4 @@ export class ItemMaterialsService {
   async deleteByItem(item: Item) {
     await this.itemMaterialRepository.delete({ item: { id: item.id } });
   }
-
-  remove(id: number) {
-    return `This action removes a #${id} itemMaterial`;
-  }
 }

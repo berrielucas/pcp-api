@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsArray, IsEnum, IsNotEmpty, IsOptional, IsString, ValidateIf, ValidateNested } from "class-validator";
+import { IsArray, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from "class-validator";
 import { ItemMaterialDto } from "src/item_materials/dto/item-material.dto";
 
 export class CreateItemDto {
@@ -15,6 +15,11 @@ export class CreateItemDto {
     @IsString()
     @IsNotEmpty()
     readonly unit: string;
+    
+    @IsNumber()
+    @IsNotEmpty()
+    @IsOptional()
+    readonly quantity?: number;
     
     @IsString()
     @IsNotEmpty()

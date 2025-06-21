@@ -23,7 +23,7 @@ export class ItemsService {
   }
 
   async create(createItemDto: CreateItemDto) {
-    const { raw_materials, ...partialCreateItemDto } = createItemDto;
+    const { raw_materials, quantity, ...partialCreateItemDto } = createItemDto;
 
     const raw_materials_items: { raw_material: Item; quantity: number; }[] = [];
 
@@ -45,7 +45,7 @@ export class ItemsService {
     const item = this.itemRepository.create(partialCreateItemDto);
     await this.itemRepository.save(item);
 
-    await this.inventoryService.create({ item, quantity: 0 });
+    await this.inventoryService.create({ item, quantity: quantity ?? 0 });
 
     for (const { raw_material, quantity } of raw_materials_items) {
       await this.itemMaterialService.create({ item, raw_material, quantity: quantity });
@@ -104,13 +104,13 @@ export class ItemsService {
   }
 
   async update(id: number, updateItemDto: UpdateItemDto) {
-    const { raw_materials, ...partialUpdateItemDto } = updateItemDto;
+    const { raw_materials, quantity, ...partialUpdateItemDto } = updateItemDto;
 
     const item = await this.findOne(id);
 
     const raw_materials_items: { raw_material: Item; quantity: number; }[] = [];
 
-    if (raw_materials) {
+    if (raw_materials?.length) {
       for (const element of raw_materials) {
         const raw_material = await this.findOne(element.raw_material_id);
         if (raw_material) {
@@ -127,15 +127,25 @@ export class ItemsService {
 
 
     if (item) {
-      const update_item = this.itemRepository.merge(item, partialUpdateItemDto);
-      await this.itemRepository.save(update_item);
-      await this.itemMaterialService.deleteByItem(item);
-      for (const { raw_material, quantity } of raw_materials_items) {
-        await this.itemMaterialService.create({ item, raw_material, quantity });
+      const update_item = await this.itemRepository.preload({
+        id, 
+        ...partialUpdateItemDto
+      });
+      if (update_item) {
+        await this.itemRepository.save(update_item);
+      }
+      if (quantity) {
+        await this.updateInventory(item.id, { quantity });
+      }
+      if (raw_materials !== undefined) {
+        await this.itemMaterialService.deleteByItem(item);
+        for (const { raw_material, quantity } of raw_materials_items) {
+          await this.itemMaterialService.create({ item, raw_material, quantity });
+        }
       }
     }
 
-    return await this.findOne(id);
+    return this.findOne(id);
   }
 
   async remove(id: number) {

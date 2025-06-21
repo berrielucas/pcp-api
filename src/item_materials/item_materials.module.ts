@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { ItemMaterialsService } from './item_materials.service';
-import { ItemMaterialsController } from './item_materials.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ItemMaterial } from './entities/item_material.entity';
 
@@ -8,7 +7,7 @@ import { ItemMaterial } from './entities/item_material.entity';
   imports: [
     TypeOrmModule.forFeature([ItemMaterial]),
   ],
-  controllers: [ItemMaterialsController],
+  controllers: [],
   providers: [ItemMaterialsService],
   exports: [ItemMaterialsService],
 })

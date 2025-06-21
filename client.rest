@@ -42,40 +42,36 @@ DELETE {{baseUrl}}/user/3
 GET {{baseUrl}}/items
 
 ### @name Find-Item
-GET {{baseUrl}}/items/25
+GET {{baseUrl}}/items/7
 
 ### @name Create-Item
 POST {{baseUrl}}/items
 Content-Type: application/json
 
 {
-    "name": "Produto 01",
+    "name": "Produto 02",
     "unit": "unit",
     "description": "Exemplo",
     "item_type": "product",
+    "quantity": 10,
     "raw_materials": [
         {
-            "raw_material_id": 23,
+            "raw_material_id": 5,
             "quantity": 45
-        },
-        {
-            "raw_material_id": 22,
-            "quantity": 23
         }
     ]
-    
 }
 
 
 ### @name Update-Item
-PATCH   {{baseUrl}}/items/989
+PATCH   {{baseUrl}}/items/7
 Content-Type: application/json
 
 {
     "raw_materials": [
         {
-            "raw_material_id": 23,
-            "quantity": 10
+            "raw_material_id": 3,
+            "quantity": 18
         }
     ]
 }
