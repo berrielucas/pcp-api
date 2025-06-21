@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from 'src/user/user.module';
 import { ItemsModule } from 'src/items/items.module';
@@ -18,11 +18,11 @@ import { ItemMaterialsModule } from 'src/item_materials/item_materials.module';
       autoLoadEntities: true, // Carrega todas as entidades
       synchronize: true, // Sincroniza tudo com o BD - Não deve ser usado em produção
     }),
-    UserModule,
-    InventoryModule,
-    ItemsModule,
-    ItemMaterialsModule,
-    MachinesModule,
+    forwardRef(() => UserModule),
+    forwardRef(() => InventoryModule),
+    forwardRef(() => ItemsModule),
+    forwardRef(() => ItemMaterialsModule),
+    forwardRef(() => MachinesModule),
   ],
 })
 export class AppModule {}
