@@ -1,5 +1,6 @@
-// src/usuarios/entities/usuario.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm';
+import { Alert } from 'src/alerts/entities/alert.entity';
+import { ProductionOrder } from 'src/production_orders/entities/production_order.entity';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToMany } from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -17,6 +18,12 @@ export class User {
 
   @Column({ default: 'operador' })
   role: 'admin' | 'operador';
+
+  @OneToMany(() => Alert, (alert) => alert.user)
+  alerts: Alert[];
+
+  @OneToMany(() => ProductionOrder, (productionOrder) => productionOrder.manager)
+  manager_in: ProductionOrder[];
 
   @CreateDateColumn()
   createdAt: Date;

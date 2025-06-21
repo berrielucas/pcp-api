@@ -14,5 +14,6 @@ import { ItemMaterialsModule } from 'src/item_materials/item_materials.module';
   ],
   controllers: [ItemsController],
   providers: [ItemsService],
+  exports: [ItemsService],
 })
 export class ItemsModule {}

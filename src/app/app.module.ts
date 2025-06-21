@@ -5,6 +5,8 @@ import { ItemsModule } from 'src/items/items.module';
 import { InventoryModule } from 'src/inventory/inventory.module';
 import { MachinesModule } from 'src/machines/machines.module';
 import { ItemMaterialsModule } from 'src/item_materials/item_materials.module';
+import { AlertsModule } from 'src/alerts/alerts.module';
+import { ProductionOrdersModule } from 'src/production_orders/production_orders.module';
 
 @Module({
   imports: [
@@ -16,13 +18,15 @@ import { ItemMaterialsModule } from 'src/item_materials/item_materials.module';
       database: 'pcp',
       password: 'postgres',
       autoLoadEntities: true, // Carrega todas as entidades
-      synchronize: true, // Sincroniza tudo com o BD - Não deve ser usado em produção
+      synchronize: true, // Sincroniza tudo com o BD - Não usar em produção
     }),
     forwardRef(() => UserModule),
     forwardRef(() => InventoryModule),
     forwardRef(() => ItemsModule),
     forwardRef(() => ItemMaterialsModule),
     forwardRef(() => MachinesModule),
+    forwardRef(() => AlertsModule),
+    forwardRef(() => ProductionOrdersModule)
   ],
 })
 export class AppModule {}
