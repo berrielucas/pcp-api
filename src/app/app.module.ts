@@ -7,6 +7,9 @@ import { MachinesModule } from 'src/machines/machines.module';
 import { ItemMaterialsModule } from 'src/item_materials/item_materials.module';
 import { AlertsModule } from 'src/alerts/alerts.module';
 import { ProductionOrdersModule } from 'src/production_orders/production_orders.module';
+import { ProductionPerformanceModule } from 'src/production_performance/production_performance.module';
+import { ProductionScheduleModule } from 'src/production_schedule/production_schedule.module';
+import { CommonModule } from 'src/common/common.module';
 
 @Module({
   imports: [
@@ -20,13 +23,16 @@ import { ProductionOrdersModule } from 'src/production_orders/production_orders.
       autoLoadEntities: true, // Carrega todas as entidades
       synchronize: true, // Sincroniza tudo com o BD - Não usar em produção
     }),
+    forwardRef(() => CommonModule),
     forwardRef(() => UserModule),
     forwardRef(() => InventoryModule),
     forwardRef(() => ItemsModule),
     forwardRef(() => ItemMaterialsModule),
     forwardRef(() => MachinesModule),
     forwardRef(() => AlertsModule),
-    forwardRef(() => ProductionOrdersModule)
+    forwardRef(() => ProductionOrdersModule),
+    forwardRef(() => ProductionPerformanceModule),
+    forwardRef(() => ProductionScheduleModule),
   ],
 })
-export class AppModule {}
+export class AppModule {}
