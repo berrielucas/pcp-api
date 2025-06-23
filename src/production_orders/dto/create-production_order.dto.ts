@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from "class-validator";
 
 export class CreateProductionOrderDto {
     @IsNumber()
@@ -13,7 +13,7 @@ export class CreateProductionOrderDto {
     @IsNotEmpty()
     readonly quantity: number;
     
-    @IsDate()
+    @IsString()
     @IsNotEmpty()
     readonly deadline: Date;
 
