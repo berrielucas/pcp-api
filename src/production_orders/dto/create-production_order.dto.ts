@@ -1,4 +1,4 @@
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from "class-validator";
 
 export class CreateProductionOrderDto {
     @IsNumber()
@@ -27,4 +27,9 @@ export class CreateProductionOrderDto {
     })
     @IsOptional()
     readonly status?: 'pending' | 'in_progress' | 'finished' | 'cancelled';
+
+    @ValidateIf(o => o.status === 'finished')
+    @IsNumber()
+    @IsNotEmpty()
+    readonly approved_quantity?: number;
 }

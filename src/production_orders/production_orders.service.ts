@@ -1,12 +1,15 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductionOrderDto } from './dto/create-production_order.dto';
 import { UpdateProductionOrderDto } from './dto/update-production_order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductionOrder } from './entities/production_order.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { UserService } from 'src/user/user.service';
 import { ItemsService } from 'src/items/items.service';
 import { AlertsService } from 'src/alerts/alerts.service';
+import { ProductionPerformanceService } from 'src/production_performance/production_performance.service';
+import { ProductionScheduleService } from 'src/production_schedule/production_schedule.service';
+import { DateService } from 'src/common/services/date.service';
 
 @Injectable()
 export class ProductionOrdersService {
@@ -17,6 +20,9 @@ export class ProductionOrdersService {
     private readonly userService: UserService,
     private readonly itemService: ItemsService,
     private readonly alertService: AlertsService,
+    private readonly productionScheduleService: ProductionScheduleService,
+    private readonly productionPerformanceService: ProductionPerformanceService,
+    private readonly dateService: DateService,
   ) {}
 
   throwNotFoundError() {
@@ -24,10 +30,35 @@ export class ProductionOrdersService {
   }
 
   async create(createProductionOrderDto: CreateProductionOrderDto) {
-    const { manager_id, item_id, ...partialCreateDto } = createProductionOrderDto;
+    const { manager_id, item_id, approved_quantity, deadline, quantity, status } = createProductionOrderDto;
     
     const manager = await this.userService.findOne(manager_id);
     const item = await this.itemService.findOne(item_id);
+
+    let partialCreateDto = {
+      deadline,
+      quantity,
+      status
+    }
+
+    if (status === 'in_progress') {
+      partialCreateDto = {
+        ...partialCreateDto,
+        ...{
+          start_time: new Date(),
+          end_time: null,
+        }
+      }
+    }
+
+    if (status === 'finished') {
+      partialCreateDto = {
+        ...partialCreateDto,
+        ...{
+          end_time: new Date(),
+        }
+      }
+    }
 
     const production_order = this.productionOrdersRepository.create({
       manager,
@@ -35,7 +66,35 @@ export class ProductionOrdersService {
       ...partialCreateDto
     });
 
-    return this.productionOrdersRepository.save(production_order);
+    const schedules = await this.productionScheduleService.findByWhere({
+      production_order : {
+        id: production_order.id
+      },
+      status: In(['pending', 'started'])
+    });
+
+    if (production_order.status === 'finished' && schedules?.length) {
+      throw new BadRequestException("A ordem não pode ser finalizada, pois tem atividades não concluídas");
+    }
+
+    await this.productionOrdersRepository.save(production_order);
+
+    if (production_order.status === 'finished' && approved_quantity) {
+      const quality = parseFloat(((approved_quantity / production_order.quantity) * 100).toFixed(2));
+      const planned_time = this.dateService.difference(new Date(production_order.createdAt), new Date(production_order.deadline));
+      const real_time = this.dateService.difference(new Date(production_order.start_time), new Date(production_order.end_time));
+      const efficiency = parseFloat(((real_time.hours / planned_time.hours) * 100).toFixed(2));
+      const productivity = (production_order.quantity / real_time.hours);
+
+      await this.productionPerformanceService.create({
+        production_order,
+        efficiency,
+        productivity,
+        quality,
+      });
+    }
+
+    return this.findOne(production_order.id)
   }
 
   async findAll() {
@@ -49,16 +108,37 @@ export class ProductionOrdersService {
         id,
       },
     });
-    return production_order[0];
+    if (production_order?.length) return production_order[0];
+    this.throwNotFoundError();
   }
 
   async update(id: number, updateProductionOrderDto: UpdateProductionOrderDto) {
-    const { manager_id, item_id, status, deadline, quantity } = updateProductionOrderDto;
+    const { manager_id, item_id, status, deadline, quantity, approved_quantity } = updateProductionOrderDto;
 
     let partialUpdateDto = {
       status,
       deadline,
       quantity,
+    }
+
+    
+    if (status === 'in_progress') {
+      partialUpdateDto = {
+        ...partialUpdateDto,
+        ...{
+          start_time: new Date(),
+          end_time: null,
+        }
+      }
+    }
+
+    if (status === 'finished') {
+      partialUpdateDto = {
+        ...partialUpdateDto,
+        ...{
+          end_time: new Date(),
+        }
+      }
     }
 
     if (manager_id) {
@@ -83,10 +163,37 @@ export class ProductionOrdersService {
       id,
       ...partialUpdateDto
     });
+    
     if (production_order) {
-      await this.productionOrdersRepository.save(production_order);
-    }
+      const schedules = await this.productionScheduleService.findByWhere({
+        production_order : {
+          id: production_order.id
+        },
+        status: In(['pending', 'started'])
+      });
 
+      if (production_order.status === 'finished' && schedules?.length) {
+        throw new BadRequestException("A ordem não pode ser finalizada, pois tem atividades não concluídas");
+      }
+
+      await this.productionOrdersRepository.save(production_order);
+
+      if (production_order.status === 'finished' && approved_quantity) {
+        const quality = parseFloat(((approved_quantity / production_order.quantity) * 100).toFixed(2));
+        const planned_time = this.dateService.difference(new Date(production_order.createdAt), new Date(production_order.deadline));
+        const real_time = this.dateService.difference(new Date(production_order.start_time), new Date(production_order.end_time));
+        const efficiency = parseFloat(((real_time.hours / planned_time.hours) * 100).toFixed(2));
+        const productivity = (production_order.quantity / real_time.hours);
+  
+        await this.productionPerformanceService.create({
+          production_order,
+          efficiency,
+          productivity,
+          quality,
+        });
+      }
+    }
+    
     return this.findOne(id);
   }
 

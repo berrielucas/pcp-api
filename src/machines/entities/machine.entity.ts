@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { ProductionSchedule } from "src/production_schedule/entities/production_schedule.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Machine {
@@ -7,6 +8,9 @@ export class Machine {
 
     @Column()
     name: string;
+
+    @OneToMany(() => ProductionSchedule, (productionSchedule) => productionSchedule.production_order)
+    schedule: ProductionSchedule[];
 
     @CreateDateColumn()
     createdAt: Date;

@@ -1,6 +1,8 @@
 import { Item } from "src/items/entities/item.entity";
+import { ProductionPerformance } from "src/production_performance/entities/production_performance.entity";
+import { ProductionSchedule } from "src/production_schedule/entities/production_schedule.entity";
 import { User } from "src/user/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class ProductionOrder {
@@ -29,6 +31,18 @@ export class ProductionOrder {
 
     @Column({ default: 'pending' })
     status: 'pending' | 'in_progress' | 'finished' | 'cancelled';
+
+    @Column('datetime', { nullable: true })
+    start_time: Date;
+
+    @Column('datetime', { nullable: true })
+    end_time: Date;
+
+    @OneToOne(() => ProductionPerformance, (productionPerformance) => productionPerformance.production_order)
+    performance: ProductionPerformance;
+
+    @OneToMany(() => ProductionSchedule, (productionSchedule) => productionSchedule.production_order)
+    schedule: ProductionSchedule[];
     
     @CreateDateColumn()
     createdAt: Date;
