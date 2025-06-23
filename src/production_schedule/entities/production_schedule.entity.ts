@@ -23,10 +23,10 @@ export class ProductionSchedule {
     @Column({ default: 'pending' })
     status: 'pending' | 'started' | 'completed';
 
-    @Column('datetime', { nullable: true })
+    @Column('date', { nullable: true })
     start_time: Date;
 
-    @Column('datetime', { nullable: true })
+    @Column('date', { nullable: true })
     end_time: Date;
 
     @CreateDateColumn()
