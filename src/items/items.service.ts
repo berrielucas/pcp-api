@@ -99,7 +99,7 @@ export class ItemsService {
         },
       },
     });
-    if (item) return item[0];
+    if (item?.length) return item[0];
     this.throwNotFoundError();
   }
 
