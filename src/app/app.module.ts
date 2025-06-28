@@ -10,6 +10,7 @@ import { ProductionOrdersModule } from 'src/production_orders/production_orders.
 import { ProductionPerformanceModule } from 'src/production_performance/production_performance.module';
 import { ProductionScheduleModule } from 'src/production_schedule/production_schedule.module';
 import { CommonModule } from 'src/common/common.module';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CommonModule } from 'src/common/common.module';
     forwardRef(() => ProductionOrdersModule),
     forwardRef(() => ProductionPerformanceModule),
     forwardRef(() => ProductionScheduleModule),
+    forwardRef(() => AuthModule),
   ],
 })
-export class AppModule {}
+export class AppModule {}
