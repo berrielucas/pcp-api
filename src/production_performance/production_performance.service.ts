@@ -4,13 +4,14 @@ import { UpdateProductionPerformanceDto } from './dto/update-production_performa
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductionPerformance } from './entities/production_performance.entity';
 import { Repository } from 'typeorm';
+import { ProductionOrder } from 'src/production_orders/entities/production_order.entity';
 
 @Injectable()
 export class ProductionPerformanceService {
-  constructor (
+  constructor(
     @InjectRepository(ProductionPerformance)
     private readonly productionPerformanceRepository: Repository<ProductionPerformance>,
-  ) {}
+  ) { }
 
   throwNotFoundError() {
     throw new NotFoundException("Desempenho não encontrada")
@@ -27,7 +28,7 @@ export class ProductionPerformanceService {
   }
 
   async findOne(id: number) {
-    const performance = await this.productionPerformanceRepository.findOneBy({id});
+    const performance = await this.productionPerformanceRepository.findOneBy({ id });
     if (performance) return performance;
   }
 
@@ -42,5 +43,9 @@ export class ProductionPerformanceService {
   async remove(id: number) {
     const performance = await this.findOne(id);
     if (performance) return this.productionPerformanceRepository.remove(performance);
+  }
+
+  async deleteByOrder(production_order: ProductionOrder) {
+    await this.productionPerformanceRepository.delete({ production_order: { id: production_order.id } });
   }
 }

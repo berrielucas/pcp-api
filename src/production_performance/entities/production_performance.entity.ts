@@ -1,12 +1,12 @@
 import { ProductionOrder } from "src/production_orders/entities/production_order.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class ProductionPerformance {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToMany(() => ProductionOrder, (productionOrder) => productionOrder.performance)
+    @ManyToOne(() => ProductionOrder, (productionOrder) => productionOrder.performance)
     @JoinColumn({ name: 'order_id' })
     production_order: ProductionOrder;
 

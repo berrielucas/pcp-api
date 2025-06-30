@@ -36,7 +36,7 @@ export class ProductionOrdersService {
     const item = await this.itemService.findOne(item_id);
 
     let partialCreateDto = {
-      deadline,
+      deadline: new Date(deadline),
       quantity,
       status
     }
@@ -98,7 +98,9 @@ export class ProductionOrdersService {
   }
 
   async findAll() {
-    const production_orders = await this.productionOrdersRepository.find();
+    const production_orders = await this.productionOrdersRepository.find({
+      relations: ['manager', 'item', 'performance', 'schedule'],
+    });
     return production_orders;
   }
 
@@ -107,6 +109,7 @@ export class ProductionOrdersService {
       where: {
         id,
       },
+      relations: ['manager', 'item', 'performance', 'schedule'],
     });
     if (production_order?.length) return production_order[0];
     this.throwNotFoundError();
@@ -117,8 +120,16 @@ export class ProductionOrdersService {
 
     let partialUpdateDto = {
       status,
-      deadline,
       quantity,
+    }
+
+    if (deadline) {
+      partialUpdateDto = {
+        ...{
+          deadline: new Date(deadline),
+        },
+        ...partialUpdateDto,
+      }
     }
 
     
@@ -178,13 +189,17 @@ export class ProductionOrdersService {
 
       await this.productionOrdersRepository.save(production_order);
 
+      if (production_order.status !== 'finished') {
+        await this.productionPerformanceService.deleteByOrder(production_order);
+      }
+
       if (production_order.status === 'finished' && approved_quantity) {
         const quality = parseFloat(((approved_quantity / production_order.quantity) * 100).toFixed(2));
-        const planned_time = this.dateService.difference(new Date(production_order.createdAt), new Date(production_order.deadline));
+        const planned_time = this.dateService.difference(new Date(production_order.start_time), new Date(production_order.deadline));
         const real_time = this.dateService.difference(new Date(production_order.start_time), new Date(production_order.end_time));
-        const efficiency = parseFloat(((real_time.hours / planned_time.hours) * 100).toFixed(2));
-        const productivity = (production_order.quantity / real_time.hours);
-  
+        const efficiency = parseFloat(((real_time.milliseconds / planned_time.milliseconds) * 100).toFixed(2));
+        const productivity = parseFloat(((((production_order.quantity / real_time.milliseconds) * 1000) * 60) * 60).toFixed(2));
+
         await this.productionPerformanceService.create({
           production_order,
           efficiency,

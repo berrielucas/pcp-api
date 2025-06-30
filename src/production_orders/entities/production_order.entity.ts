@@ -32,10 +32,10 @@ export class ProductionOrder {
     @Column({ default: 'pending' })
     status: 'pending' | 'in_progress' | 'finished' | 'cancelled';
 
-    @Column('date', { nullable: true })
+    @Column({ nullable: true })
     start_time: Date;
 
-    @Column('date', { nullable: true })
+    @Column({ nullable: true })
     end_time: Date;
 
     @OneToOne(() => ProductionPerformance, (productionPerformance) => productionPerformance.production_order)

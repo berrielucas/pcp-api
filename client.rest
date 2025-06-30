@@ -4,19 +4,18 @@
 # Users
 
 ### @name FindAll-Users
-GET {{baseUrl}}/user
+GET {{baseUrl}}/users
 
 ### @name Find-User
 GET {{baseUrl}}/user/1
 
 ### @name Create-User
-POST {{baseUrl}}/user
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
-    "name": "Lucas Berriel",
-    "email": "lucas@teste.com",
-    "password": "123456",
+    "name": "Mayara",
+    "email": "mayara@teste.com",
     "role": "admin"
 }
 
