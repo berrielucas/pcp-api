@@ -11,7 +11,8 @@ export class CreateUserDto {
 
     @IsString()
     @IsNotEmpty()
-    readonly password: string;
+    @IsOptional()
+    readonly password?: string;
 
     @IsString()
     @IsEnum({
@@ -20,5 +21,5 @@ export class CreateUserDto {
     })
     @IsNotEmpty()
     @IsOptional()
-    readonly role: 'admin' | 'operador';
+    readonly role?: 'admin' | 'operador';
 }

@@ -14,11 +14,14 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ default: 'operador' })
   role: 'admin' | 'operador';
+
+  @Column({ default: true })
+  firsh_login: boolean;
 
   @OneToMany(() => Alert, (alert) => alert.user)
   alerts: Alert[];
