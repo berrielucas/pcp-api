@@ -19,6 +19,9 @@ export class Item {
 
     @Column()
     item_type: 'product' | 'raw_material' | 'both';
+
+    @Column('numeric', { precision: 10, scale: 2, default: 0 })
+    min_stock_limit: number;
     
     @OneToOne(() => Inventory, (inventory) => inventory.item)
     inventory: Inventory;

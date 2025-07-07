@@ -10,5 +10,6 @@ import { Machine } from './entities/machine.entity';
   ],
   controllers: [MachinesController],
   providers: [MachinesService],
+  exports: [MachinesService],
 })
 export class MachinesModule {}

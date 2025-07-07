@@ -7,7 +7,7 @@ export class Alert {
     id: number;
 
     @Column({ default: 'general' })
-    alert_type: 'general' | 'order_update' | 'order_completed' | 'restock' | 'inventory_low';
+    alert_type: 'error' |'general' | 'order_update' | 'order_completed' | 'restock' | 'inventory_low';
 
     @ManyToOne(() => User, (user) => user.alerts)
     @JoinColumn({ name: 'user_id' })

@@ -12,9 +12,9 @@ export class AlertsController {
     return this.alertsService.create(createAlertDto);
   }
 
-  @Get()
-  findAll() {
-    return this.alertsService.findAll();
+  @Post('listAll')
+  findAll(@Body('idUser') idUser: number) {
+    return this.alertsService.findAll(idUser);
   }
 
   @Get(':id')
@@ -30,5 +30,15 @@ export class AlertsController {
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.alertsService.remove(id);
+  }
+
+  @Patch(':id/read')
+  markAsRead(@Param('id', ParseIntPipe) id: number) {
+    return this.alertsService.markAsRead(id);
+  }
+
+  @Post('/mark-all-as-read')
+  markAllAsRead(@Body('idUser') idUser: number) {
+    return this.alertsService.markAllAsRead(idUser);
   }
 }

@@ -20,6 +20,10 @@ export class CreateItemDto {
     @IsNotEmpty()
     @IsOptional()
     readonly quantity?: number;
+
+    @IsNumber()
+    @IsOptional()
+    readonly min_stock_limit?: number;
     
     @IsString()
     @IsNotEmpty()

@@ -81,6 +81,14 @@ export class UserService {
     this.throwNotFoundError();
   }
 
+  async findAdmins() {
+    return this.userRepository.find({
+      where: {
+        role: 'admin',
+      },
+    });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto) {
     const { password, email, name, role } = updateUserDto;
 

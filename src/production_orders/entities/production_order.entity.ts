@@ -26,6 +26,9 @@ export class ProductionOrder {
     @Column('numeric', { precision: 10, scale: 2 })
     quantity: number;
 
+    @Column('numeric', { precision: 10, scale: 2 , nullable: true })
+    approved_quantity: number;
+
     @Column('date')
     deadline: Date;
 

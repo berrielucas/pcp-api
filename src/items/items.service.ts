@@ -134,7 +134,7 @@ export class ItemsService {
       if (update_item) {
         await this.itemRepository.save(update_item);
       }
-      if (quantity) {
+      if (quantity !== undefined) {
         await this.updateInventory(item.id, { quantity });
       }
       if (raw_materials !== undefined) {

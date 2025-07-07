@@ -12,6 +12,7 @@ export class CreateAlertDto {
     @IsString()
     @IsNotEmpty()
     @IsEnum({
+        error: 'error',
         general: 'general',
         order_update: 'order_update',
         order_completed: 'order_completed',
@@ -19,7 +20,7 @@ export class CreateAlertDto {
         inventory_low: 'inventory_low',
     })
     @IsOptional()
-    readonly alert_type?: 'general' | 'order_update' | 'order_completed' | 'restock' | 'inventory_low';
+    readonly alert_type?: 'error' | 'general' | 'order_update' | 'order_completed' | 'restock' | 'inventory_low';
 
     @IsNumber()
     @IsNotEmpty()

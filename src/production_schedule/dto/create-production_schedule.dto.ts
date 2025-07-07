@@ -1,10 +1,6 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsDateString } from "class-validator";
 
 export class CreateProductionScheduleDto {
-    @IsNumber()
-    @IsNotEmpty()
-    order_id: number;
-
     @IsNumber()
     @IsNotEmpty()
     machine_id: number;
@@ -21,5 +17,13 @@ export class CreateProductionScheduleDto {
         completed: 'completed',
     })
     @IsOptional()
-    status: 'pending' | 'started' | 'completed';
+    status?: 'pending' | 'started' | 'completed';
+
+    @IsDateString()
+    // @IsOptional()
+    start_time: Date;
+
+    @IsDateString()
+    // @IsOptional()
+    end_time: Date;
 }
