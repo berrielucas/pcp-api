@@ -9,7 +9,10 @@ export class Alert {
     @Column({ default: 'general' })
     alert_type: 'error' |'general' | 'order_update' | 'order_completed' | 'restock' | 'inventory_low';
 
-    @ManyToOne(() => User, (user) => user.alerts)
+    @ManyToOne(() => User, (user) => user.alerts, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
     @JoinColumn({ name: 'user_id' })
     user: User;
 

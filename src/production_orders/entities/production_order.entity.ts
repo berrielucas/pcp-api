@@ -10,14 +10,14 @@ export class ProductionOrder {
     id: number;
 
     @ManyToOne(() => User, (user) => user.manager_in, {
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
     @JoinColumn({ name: 'manager_id' })
     manager: User;
 
     @ManyToOne(() => Item, (item) => item.production_orders, {
-        onDelete: 'SET NULL',
+        onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
     })
     @JoinColumn({ name: 'item_id' })

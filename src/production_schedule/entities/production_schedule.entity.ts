@@ -8,15 +8,24 @@ export class ProductionSchedule {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => ProductionOrder, (productionOrder) => productionOrder.schedule)
+    @ManyToOne(() => ProductionOrder, (productionOrder) => productionOrder.schedule, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
     @JoinColumn({ name: 'order_id' })
     production_order: ProductionOrder;
 
-    @ManyToOne(() => Machine, (machine) => machine.schedule)
+    @ManyToOne(() => Machine, (machine) => machine.schedule, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
     @JoinColumn({ name: 'machine_id' })
     machine: Machine;
 
-    @ManyToOne(() => User, (user) => user.schedule)
+    @ManyToOne(() => User, (user) => user.schedule, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
     @JoinColumn({ name: 'operator_id' })
     operator: User;
 

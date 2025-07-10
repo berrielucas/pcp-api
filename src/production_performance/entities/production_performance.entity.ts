@@ -6,7 +6,10 @@ export class ProductionPerformance {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne(() => ProductionOrder, (productionOrder) => productionOrder.performance)
+    @ManyToOne(() => ProductionOrder, (productionOrder) => productionOrder.performance, {
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
+    })
     @JoinColumn({ name: 'order_id' })
     production_order: ProductionOrder;
 
